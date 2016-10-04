@@ -9,4 +9,5 @@ int main(array<System::String ^> ^args)
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::Run(gcnew MainForm());
 	return 0;
-}
+}
+
