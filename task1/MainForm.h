@@ -48,6 +48,7 @@ namespace task1 {
 	private: Point^ firstClickPoint = gcnew Point();
 	private: Point^ secondClickPoint = gcnew Point();
 	private: System::Windows::Forms::Button^  ordinalLine_Button;
+	private: System::Windows::Forms::Button^  button1;
 
 
 	protected:
@@ -71,6 +72,7 @@ namespace task1 {
 			this->lineButton = (gcnew System::Windows::Forms::Button());
 			this->drawCircule_button = (gcnew System::Windows::Forms::Button());
 			this->ordinalLine_Button = (gcnew System::Windows::Forms::Button());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -113,11 +115,22 @@ namespace task1 {
 			this->ordinalLine_Button->UseVisualStyleBackColor = true;
 			this->ordinalLine_Button->Click += gcnew System::EventHandler(this, &MainForm::ordinalLine_Button_Click_1);
 			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(12, 144);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(224, 40);
+			this->button1->TabIndex = 5;
+			this->button1->Text = L"draw ordinal line";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(916, 393);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->ordinalLine_Button);
 			this->Controls->Add(this->drawCircule_button);
 			this->Controls->Add(this->lineButton);
@@ -236,6 +249,50 @@ namespace task1 {
 		}
 	}
 
+	private: void drawElipse(int start_x, int start_y, int a, int b) {
+		int cur_y = b;
+		int cur_x = 0;
+		int b2 = b*b;
+		int a2 = a*a;
+
+		int delta = 0;
+		int gamma = 0;
+		while (true)
+		{
+			if (cur_y < 0) {
+				break;
+			}
+			activePixel(pen, start_x + cur_x, start_y + cur_y);
+			activePixel(pen, start_x + cur_x, start_y - cur_y);
+			activePixel(pen, start_x - cur_x, start_y + cur_y);
+			activePixel(pen, start_x - cur_x, start_y - cur_y);
+			Console::WriteLine(cur_x + "\t" + cur_y + "\t" + delta + "\t" + gamma);
+			System::Threading::Thread::Sleep(33);
+			delta = b2 * Math::Pow((cur_x + 1), 2) + a2 * Math::Pow((cur_y - 1), 2) - a2*b2;
+
+			if (delta >= 0) {// Выбираем между (x, y-1) и (x+1, y-1)
+				gamma = b2 * Math::Pow((2 * cur_x - 1), 2) + a2 * Math::Pow((2 * cur_y + 2), 2) - 4 * a2*b2;
+				if (gamma > 0) { //Выбираем (x + 1, y-1)
+					cur_y--;
+					cur_x++;
+				}
+				else { //Выбираем (x + 1, y-)
+					cur_x++;
+				}
+			}
+			else { // Выбираем между (x, y-1) и (x + 1, y - 1)
+				gamma = b2 * Math::Pow((2 * cur_x + 2), 2) + a2 * Math::Pow((2 * cur_y - 1), 2) - 4 * a2*b2;
+				if (gamma > 0) { //Выбираем (x, y-1)
+					cur_y--;
+				}
+				else { //Выбираем (x + 1, y-1)
+					cur_y--;
+					cur_x++;
+				}
+			}
+		}
+	}
+
 	private: System::Void pictureBox1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 	Color ^col = gcnew Color();
 	activePixel(gcnew SolidBrush(col->Blue), e->X, e->Y);
@@ -286,6 +343,10 @@ namespace task1 {
 
 private: System::Void ordinalLine_Button_Click_1(System::Object^  sender, System::EventArgs^  e) {
 	mode = WorkMode::ORDINAL_LINE;
+}
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	pen = gcnew SolidBrush(color->Red);
+	drawElipse(150, 150, 25, 100);
 }
 };
 
