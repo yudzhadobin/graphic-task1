@@ -11,7 +11,7 @@ namespace task1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	enum WorkMode { COOL_LINE, COOL_CIRCLE, ELIPSE };
+	enum WorkMode { COOL_LINE, COOL_CIRCLE, ELIPSE};
 
 	/// <summary>
 	/// Summary for MainForm
@@ -146,26 +146,22 @@ namespace task1 {
 		mode = COOL_CIRCLE;
 	}
 
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		mode = WorkMode::ELIPSE;
-	}
-
 	private: System::Void pictureBox1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-		activePixel(Brushes::Blue, bm, e->X, e->Y);
-		if (isFirstClick) {
-			firstClickPoint->X = e->X;
-			firstClickPoint->Y = e->Y;
-			isFirstClick = false;
-		}
-		else {
-			secondClickPoint->X = e->X;
-			secondClickPoint->Y = e->Y;
-			draw();
-			isFirstClick = true;
-		}
+	activePixel(Brushes::Blue, bm, e->X, e->Y);
+	if (isFirstClick) {
+		firstClickPoint->X = e->X;
+		firstClickPoint->Y = e->Y;
+		isFirstClick = false;
 	}
+	else {
+		secondClickPoint->X = e->X;
+		secondClickPoint->Y = e->Y;
+		draw();
+		isFirstClick = true;
+	}
+}
 
-	private: void draw() {
+	private: void draw() {	
 		switch (mode)
 		{
 		case COOL_LINE:
@@ -176,7 +172,7 @@ namespace task1 {
 			drawCircule(brush, bm, firstClickPoint->X, firstClickPoint->Y, calcRadius());
 			break;
 		case ELIPSE:
-			int center_x = firstClickPoint->X + (secondClickPoint->X - firstClickPoint->X) / 2;
+			int center_x = firstClickPoint->X + (secondClickPoint->X - firstClickPoint->X ) / 2;
 			int center_y = firstClickPoint->Y + (secondClickPoint->Y - firstClickPoint->Y) / 2;
 			int a = secondClickPoint->X - center_x;
 			int b = center_y - firstClickPoint->Y;
@@ -186,11 +182,17 @@ namespace task1 {
 		pictureBox1->Refresh();
 	}
 
+	
+
 	private: int calcRadius() {
-		return (int)Math::Sqrt(Math::Pow((secondClickPoint->X - firstClickPoint->X), 2) +
-			Math::Pow((secondClickPoint->Y - firstClickPoint->Y), 2));
-	}
-	};
+		 return (int)Math::Sqrt(Math::Pow((secondClickPoint->X - firstClickPoint->X),2) +
+			Math::Pow((secondClickPoint->Y - firstClickPoint->Y),2));
+		}
+
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	mode = WorkMode::ELIPSE;
+}
+};
 
 
 }
