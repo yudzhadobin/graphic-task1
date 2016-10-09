@@ -52,6 +52,7 @@ namespace task1 {
 	private: Point^ firstClickPoint = gcnew Point();
 	private: Point^ secondClickPoint = gcnew Point();
 	private: System::Windows::Forms::Button^  drawElipse_button;
+	private: System::Windows::Forms::Button^  about_Button;
 
 
 
@@ -77,6 +78,7 @@ namespace task1 {
 			this->lineButton = (gcnew System::Windows::Forms::Button());
 			this->drawCircule_button = (gcnew System::Windows::Forms::Button());
 			this->drawElipse_button = (gcnew System::Windows::Forms::Button());
+			this->about_Button = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -115,15 +117,26 @@ namespace task1 {
 			this->drawElipse_button->Name = L"drawElipse_button";
 			this->drawElipse_button->Size = System::Drawing::Size(224, 40);
 			this->drawElipse_button->TabIndex = 5;
-			this->drawElipse_button->Text = L"draw ordinal line";
+			this->drawElipse_button->Text = L"draw elipse";
 			this->drawElipse_button->UseVisualStyleBackColor = true;
 			this->drawElipse_button->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
+			// 
+			// about_Button
+			// 
+			this->about_Button->Location = System::Drawing::Point(13, 342);
+			this->about_Button->Name = L"about_Button";
+			this->about_Button->Size = System::Drawing::Size(223, 39);
+			this->about_Button->TabIndex = 7;
+			this->about_Button->Text = L"О программе.";
+			this->about_Button->UseVisualStyleBackColor = true;
+			this->about_Button->Click += gcnew System::EventHandler(this, &MainForm::about_Button_Click);
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(916, 393);
+			this->Controls->Add(this->about_Button);
 			this->Controls->Add(this->drawElipse_button);
 			this->Controls->Add(this->drawCircule_button);
 			this->Controls->Add(this->lineButton);
@@ -190,7 +203,14 @@ namespace task1 {
 		return (int)Math::Sqrt(Math::Pow((secondClickPoint->X - firstClickPoint->X), 2) +
 			Math::Pow((secondClickPoint->Y - firstClickPoint->Y), 2));
 	}
-	};
+	private: System::Void about_Button_Click(System::Object^  sender, System::EventArgs^  e) {
+		MessageBox::Show("Выполнил Жадобин Юрий, БПИ133(2). \n Управление:\n\t " +
+			"1) Прямая : мышкой выбираются 2 конца отрезка. \n\t" + 
+			"2) Круг: первый клик - центр окружности, второй клик - точка на окружности.\n\t" + 
+			"3) Эллипс: первый клик - левый верхний угол прямоугольника в который будет вписан эллипс, второй - левый нижний."
+		);
+	}
+};
 
 
 }
